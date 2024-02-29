@@ -37,7 +37,7 @@ module.exports = class Product {
   
   static deleteById(id) {
     console.log("inside delete")
-  return db.execute('DELETE * FROM products WHERE products.id=?',[id])
+  return db.execute('DELETE FROM products WHERE products.id=?',[id])
 }
   static fetchAll() {
     // getProductsFromFile(cb);
