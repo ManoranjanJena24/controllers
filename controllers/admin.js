@@ -22,15 +22,15 @@ exports.postAddProduct = (req, res, next) => {
   // }).catch((err) => {
   //   console.log(err);
   // });
-  
-  Product.create({
+  req.user.createProduct({
     title: title,
     price: price,
     imageUrl: imageUrl,
-    description:description
+    description: description,
+
   }).then((result) => {
     console.log("Created Product")
-    res.redirect('/admin/product')
+    res.redirect('/admin/products')
   }).catch((err) => {
     console.log(err)
   })
@@ -45,7 +45,12 @@ exports.getEditProduct = (req, res, next) => {
   }
   // console.log("insideEdit")
   const prodId = req.params.id;
-  Product.findByPk(prodId).then((product) => {
+  req.user.getProducts({
+    where: {id:prodId}
+  })
+  // Product.findByPk(prodId)
+    .then((products) => {
+      const product=products[0]
     if (!product) {
       return res.redirect('/')
     }
@@ -114,7 +119,7 @@ exports.getProducts = (req, res, next) => {
     //   path: '/admin/products'
     // });
   // });
-  Product.findAll().then((rows) => {
+  req.user.getProducts().then((rows) => {
     res.render('admin/products', {
       prods: rows,
       pageTitle: 'Admin Products',
